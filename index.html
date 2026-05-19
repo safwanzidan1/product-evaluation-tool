@@ -134,6 +134,44 @@
 </style>
 </head>
 <body>
+<div id="authBox" style="padding:20px;display:flex;gap:10px;align-items:center;justify-content:center;background:#111827;border-bottom:1px solid #374151;">
+
+  <input
+    id="authEmail"
+    type="email"
+    placeholder="Email"
+    style="padding:10px;border-radius:8px;border:1px solid #374151;background:#1f2937;color:white;"
+  />
+
+  <input
+    id="authPassword"
+    type="password"
+    placeholder="Password"
+    style="padding:10px;border-radius:8px;border:1px solid #374151;background:#1f2937;color:white;"
+  />
+
+  <button
+    id="loginBtn"
+    style="padding:10px 16px;border-radius:8px;background:#2563eb;color:white;"
+  >
+    Login
+  </button>
+
+  <button
+    id="signupBtn"
+    style="padding:10px 16px;border-radius:8px;background:#059669;color:white;"
+  >
+    Sign Up
+  </button>
+
+  <button
+    id="logoutBtn"
+    style="padding:10px 16px;border-radius:8px;background:#dc2626;color:white;"
+  >
+    Logout
+  </button>
+
+</div>
 <div class="app">
   <header class="header">
     <div class="logo">
@@ -387,6 +425,58 @@ function exportCSV() { if(!products.length) return alert('لا توجد منتج
 function toggleTheme() { const html = document.documentElement; const isDark = html.getAttribute('data-theme') === 'dark'; html.setAttribute('data-theme', isDark ? 'light' : 'dark'); const moon = document.getElementById('themeIconMoon'); const sun = document.getElementById('themeIconSun'); if(moon && sun) { moon.style.display = isDark ? 'none' : 'block'; sun.style.display = isDark ? 'block' : 'none'; } try { localStorage.setItem('pe_theme', isDark ? 'light' : 'dark'); } catch(e){} }
 function init() { try { const t = localStorage.getItem('pe_theme'); if(t) document.documentElement.setAttribute('data-theme', t); const moon = document.getElementById('themeIconMoon'); const sun = document.getElementById('themeIconSun'); const isDark = document.documentElement.getAttribute('data-theme') === 'dark'; if(moon && sun) { moon.style.display = isDark ? 'block' : 'none'; sun.style.display = isDark ? 'none' : 'block'; } } catch(e){} load(); renderTable(); document.getElementById('finalArrow').textContent = '↓'; }
 init();
+</script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+
+<script>
+const sb = window.supabase.createClient(
+  window.__SUPABASE_URL__,
+  window.__SUPABASE_ANON_KEY__
+);
+
+async function signup() {
+  const email = document.getElementById('authEmail').value;
+  const password = document.getElementById('authPassword').value;
+
+  const { error } = await sb.auth.signUp({
+    email,
+    password
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert('Signup success');
+}
+
+async function login() {
+  const email = document.getElementById('authEmail').value;
+  const password = document.getElementById('authPassword').value;
+
+  const { error } = await sb.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert('Login success');
+}
+
+async function logout() {
+  await sb.auth.signOut();
+  alert('Logged out');
+}
+
+document.getElementById('signupBtn').addEventListener('click', signup);
+document.getElementById('loginBtn').addEventListener('click', login);
+document.getElementById('logoutBtn').addEventListener('click', logout);
 </script>
 </body>
 </html>
