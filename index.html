@@ -495,11 +495,14 @@ document.getElementById('logoutBtn').addEventListener('click', logout);
     position: fixed !important;
     inset: 0 !important;
     z-index: 99999 !important;
+
     display: flex !important;
     flex-direction: column !important;
     gap: 14px !important;
+
     align-items: center !important;
     justify-content: center !important;
+
     background: #0f1117 !important;
     border: none !important;
   }
@@ -509,11 +512,11 @@ document.getElementById('logoutBtn').addEventListener('click', logout);
     max-width: 90vw !important;
   }
 
-  body.logged-in #authBox {
+  body.logged-out .app {
     display: none !important;
   }
 
-  body:not(.logged-in) .app {
+  body.logged-in #authBox {
     display: none !important;
   }
 </style>
