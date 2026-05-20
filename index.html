@@ -131,9 +131,22 @@
   ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
   ::-webkit-scrollbar-thumb:hover{background:var(--faint)}
   @media(max-width:640px){.form-grid{grid-template-columns:1fr}.checks-grid{grid-template-columns:1fr}.scores-grid{grid-template-columns:1fr}.toolbar{gap:6px}.search-box{min-width:0;flex:1}}
+
+#mainApp {
+  display: none;
+}
+
+body.logged-in #mainApp {
+  display: block;
+}
+
+body.logged-in #authBox {
+  display: none !important;
+}
+
 </style>
 </head>
-<body>
+<body class="logged-out">
 <div id="authBox" style="padding:20px;display:flex;gap:10px;align-items:center;justify-content:center;background:#111827;border-bottom:1px solid #374151;">
 
   <input
@@ -528,5 +541,6 @@ authClient.auth.onAuthStateChange(() => {
 
 updateAuthView();
 </script>
+</div>
 </body>
 </html>
