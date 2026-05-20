@@ -478,5 +478,55 @@ document.getElementById('signupBtn').addEventListener('click', signup);
 document.getElementById('loginBtn').addEventListener('click', login);
 document.getElementById('logoutBtn').addEventListener('click', logout);
 </script>
+<style>
+  #authBox {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #0f1117 !important;
+    border: none !important;
+  }
+
+  #authBox input {
+    width: 320px !important;
+    max-width: 90vw !important;
+  }
+
+  body.logged-in #authBox {
+    display: none !important;
+  }
+
+  body:not(.logged-in) .app {
+    display: none !important;
+  }
+</style>
+
+<script>
+const authClient = window.supabase.createClient(
+  window.__SUPABASE_URL__,
+  window.__SUPABASE_ANON_KEY__
+);
+
+async function updateAuthView() {
+  const { data } = await authClient.auth.getSession();
+
+  if (data.session) {
+    document.body.classList.add('logged-in');
+  } else {
+    document.body.classList.remove('logged-in');
+  }
+}
+
+authClient.auth.onAuthStateChange(() => {
+  updateAuthView();
+});
+
+updateAuthView();
+</script>
 </body>
 </html>
