@@ -185,8 +185,8 @@ body.logged-in #authBox {
 </button>
 
 </div>
-<div class="app">
-  <header class="header">
+<div class="app" id="mainApp">
+    <header class="header">
     <div class="logo">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       <span>Safwan Zidan</span>
@@ -521,7 +521,52 @@ document.getElementById('logoutBtn').addEventListener('click', logout);
   }
 </style>
 
+<style>
+
+#authBox {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  background: #0f1117 !important;
+}
+
+#authBox input {
+  width: 320px !important;
+  max-width: 90vw !important;
+}
+
+body.logged-out .app {
+  display: none !important;
+}
+
+body.logged-in .app {
+  display: block !important;
+}
+
+body.logged-in #authBox {
+  display: none !important;
+}
+
+#logoutBtn {
+  display: none;
+}
+
+body.logged-in #logoutBtn {
+  display: inline-flex !important;
+}
+
+</style>
+
 <script>
+
 const authClient = window.supabase.createClient(
   window.__SUPABASE_URL__,
   window.__SUPABASE_ANON_KEY__
@@ -536,14 +581,10 @@ async function updateAuthView() {
     document.body.classList.remove('logged-out');
     document.body.classList.add('logged-in');
 
-    document.getElementById('logoutBtn').style.display = 'block';
-
   } else {
 
     document.body.classList.remove('logged-in');
     document.body.classList.add('logged-out');
-
-    document.getElementById('logoutBtn').style.display = 'none';
 
   }
 
@@ -612,7 +653,7 @@ authClient.auth.onAuthStateChange(() => {
 });
 
 updateAuthView();
+
 </script>
-</div>
 </body>
 </html>
