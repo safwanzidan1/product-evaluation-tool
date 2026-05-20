@@ -528,23 +528,84 @@ const authClient = window.supabase.createClient(
 );
 
 async function updateAuthView() {
+
   const { data } = await authClient.auth.getSession();
 
   if (data.session) {
 
-  document.body.classList.remove('logged-out');
-  document.body.classList.add('logged-in');
+    document.body.classList.remove('logged-out');
+    document.body.classList.add('logged-in');
 
-  document.getElementById('logoutBtn').style.display = 'block';
+    document.getElementById('logoutBtn').style.display = 'block';
 
-} else {
+  } else {
 
-  document.body.classList.remove('logged-in');
-  document.body.classList.add('logged-out');
+    document.body.classList.remove('logged-in');
+    document.body.classList.add('logged-out');
 
-  document.getElementById('logoutBtn').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'none';
+
+  }
 
 }
+
+async function signup() {
+
+  const email = document.getElementById('authEmail').value;
+  const password = document.getElementById('authPassword').value;
+
+  const { error } = await authClient.auth.signUp({
+    email,
+    password
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert('Signup success');
+
+}
+
+async function login() {
+
+  const email = document.getElementById('authEmail').value;
+  const password = document.getElementById('authPassword').value;
+
+  const { error } = await authClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  await updateAuthView();
+
+}
+
+async function logout() {
+
+  await authClient.auth.signOut();
+
+  await updateAuthView();
+
+}
+
+document
+  .getElementById('signupBtn')
+  .addEventListener('click', signup);
+
+document
+  .getElementById('loginBtn')
+  .addEventListener('click', login);
+
+document
+  .getElementById('logoutBtn')
+  .addEventListener('click', logout);
 
 authClient.auth.onAuthStateChange(() => {
   updateAuthView();
